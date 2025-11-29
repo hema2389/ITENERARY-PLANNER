@@ -5,6 +5,3 @@ langchain
 langchain-openai
 firebase-admin
 python-dotenv
-pydantic[email]
-pytest
-pytest-dotenv
