@@ -13,9 +13,9 @@ if cred_path:
 else:
     print("WARNING: FIREBASE_ADMIN_SDK_CREDENTIALS not set. Firestore database not initialized.")
 
-def add_document(collection: str, data: dict, document_id: str = None):
+def add_document(collection: str, data: dict):
     """Adds a new document to the specified collection."""
-    doc_ref = db.collection(collection).document(document_id)
+    doc_ref = db.collection(collection).document()
     doc_ref.set(data)
     return doc_ref.id
 
