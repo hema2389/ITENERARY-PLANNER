@@ -18,17 +18,7 @@ The application is built with a modern web stack:
 
 ## API Endpoints
 
-### Crowd Density
-
-*   **POST /api/crowd/score**
-    *   **Description:** Get the current crowd score for a location.
-    *   **Request Body:** `{"location": "string"}`
-    *   **Response:** `{"location": "string", "score": "integer"}`
-
-*   **GET /api/crowd/forecast**
-    *   **Description:** Get a 7-14 day crowd forecast for a location.
-    *   **Query Parameters:** `location=string`
-    *   **Response:** `{"location": "string", "forecast": "[{...}]"}`
+(Coming Soon)
 
 ## Setup Instructions
 

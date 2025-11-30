@@ -30,12 +30,5 @@ test('renders chat component and handles messages', async () => {
     expect(screen.getByText('Hello!')).toBeInTheDocument();
   });
 
-  expect(screen.getByText((content, element) => {
-    const hasText = (node) => node.textContent === 'Destination: Paris';
-    const nodeHasText = hasText(element);
-    const childrenDontHaveText = Array.from(element.children).every(
-      (child) => !hasText(child)
-    );
-    return nodeHasText && childrenDontHaveText;
-  })).toBeInTheDocument();
+  expect(screen.getByText(/Destination: Paris/i)).toBeInTheDocument();
 });
