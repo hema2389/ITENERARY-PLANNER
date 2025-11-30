@@ -1,49 +1,35 @@
-import React, { useState } from 'react';
-import Navbar from './components/Navbar';
-import Chat from './components/Chat';
-import SwapSuggestion from './components/SwapSuggestion';
-import { useAuth } from './contexts/AuthContext';
-import axios from 'axios';
+import { useState } from 'react'
+import reactLogo from './assets/react.svg'
+import viteLogo from '/vite.svg'
+import './App.css'
 
 function App() {
-  const { currentUser } = useAuth();
-  const [swapData, setSwapData] = useState(null);
-
-  const handleSwapRequest = async () => {
-    const mockData = {
-      original_poi: { name: 'Eiffel Tower', crowd_score: 90 },
-      user_preferences: { travel_style: 'history', crowd_tolerance: 3 },
-    };
-
-    try {
-      const response = await axios.post('/api/recommendations/alternatives', mockData);
-      setSwapData({ original: mockData.original_poi, alternative: response.data });
-    } catch (error) {
-      console.error('Error getting swap suggestion:', error);
-    }
-  };
+  const [count, setCount] = useState(0)
 
   return (
-    <div className="App">
-      <Navbar />
-      <div className="p-4">
-        {currentUser ? (
-          <>
-            <Chat />
-            <button
-              onClick={handleSwapRequest}
-              className="bg-yellow-500 text-white p-2 rounded mt-4"
-            >
-              Get Swap Suggestion (Test)
-            </button>
-            <SwapSuggestion original={swapData?.original} alternative={swapData?.alternative} />
-          </>
-        ) : (
-          <p className="text-center">Please log in to start a conversation.</p>
-        )}
+    <>
+      <div>
+        <a href="https://vite.dev" target="_blank">
+          <img src={viteLogo} className="logo" alt="Vite logo" />
+        </a>
+        <a href="https://react.dev" target="_blank">
+          <img src={reactLogo} className="logo react" alt="React logo" />
+        </a>
       </div>
-    </div>
-  );
+      <h1>Vite + React</h1>
+      <div className="card">
+        <button onClick={() => setCount((count) => count + 1)}>
+          count is {count}
+        </button>
+        <p>
+          Edit <code>src/App.jsx</code> and save to test HMR
+        </p>
+      </div>
+      <p className="read-the-docs">
+        Click on the Vite and React logos to learn more
+      </p>
+    </>
+  )
 }
 
-export default App;
+export default App
