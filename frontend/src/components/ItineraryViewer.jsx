@@ -1,8 +1,7 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import axios from 'axios';
 import { useAuth } from '../contexts/AuthContext';
 import FeedbackModal from './FeedbackModal';
-import Map from './Map';
 
 const ItineraryViewer = ({ itinerary }) => {
   const { currentUser } = useAuth();
@@ -10,17 +9,6 @@ const ItineraryViewer = ({ itinerary }) => {
   const [isSaved, setIsSaved] = useState(false);
   const [isFeedbackModalOpen, setIsFeedbackModalOpen] = useState(false);
   const [savedItineraryId, setSavedItineraryId] = useState(null);
-  const [isDownloading, setIsDownloading] = useState(false);
-  const [geoData, setGeoData] = useState(null);
-
-  useEffect(() => {
-    if (itinerary) {
-      const locations = itinerary.days.flatMap(day => day.activities.map(activity => activity.name));
-      axios.post('/api/maps/geodata', { locations })
-        .then(response => setGeoData(response.data))
-        .catch(error => console.error('Error fetching geo-data:', error));
-    }
-  }, [itinerary]);
 
   const toggleDay = (dayNumber) => {
     setOpenDay(openDay === dayNumber ? null : dayNumber);
@@ -40,36 +28,12 @@ const ItineraryViewer = ({ itinerary }) => {
     }
   };
 
-  const handleDownloadPdf = async () => {
-    setIsDownloading(true);
-    try {
-      const response = await axios.post('/api/export/pdf', itinerary, {
-        responseType: 'blob',
-      });
-      const url = window.URL.createObjectURL(new Blob([response.data]));
-      const link = document.createElement('a');
-      link.href = url;
-      link.setAttribute('download', 'itinerary.pdf');
-      document.body.appendChild(link);
-      link.click();
-    } catch (error) {
-      console.error('Error downloading PDF:', error);
-    }
-    setIsDownloading(false);
-  };
-
-  const pois = itinerary ? itinerary.days.flatMap(day => day.activities.map(activity => ({
-    name: activity.name,
-    coordinates: geoData?.coordinates[activity.name],
-  }))).filter(poi => poi.coordinates) : [];
-
   if (!itinerary) return null;
 
   return (
     <>
       <div className="itinerary-viewer mt-4">
         <h2 className="text-2xl font-bold mb-4">Your Itinerary</h2>
-        <Map pois={pois} days={itinerary.days} geoData={geoData} />
         {itinerary.days.map((day) => (
           <div key={day.day_number} className="border-b">
             <button
@@ -100,13 +64,6 @@ const ItineraryViewer = ({ itinerary }) => {
           disabled={isSaved}
         >
           {isSaved ? 'Saved!' : 'Save Itinerary'}
-        </button>
-        <button
-          onClick={handleDownloadPdf}
-          className="bg-red-500 text-white p-2 rounded mt-4 ml-2"
-          disabled={isDownloading}
-        >
-          {isDownloading ? 'Downloading...' : 'Download PDF'}
         </button>
       </div>
       <FeedbackModal

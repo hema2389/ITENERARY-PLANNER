@@ -17,7 +17,7 @@ class Destination(BaseModel):
 
 class Feedback(BaseModel):
     feedback_id: str
-    user_id: Optional[str] = None
+    user_id: str
     itinerary_id: str
     crowd_averse_satisfaction: int = Field(ge=1, le=5)
     experience_quality: int = Field(ge=1, le=5)
