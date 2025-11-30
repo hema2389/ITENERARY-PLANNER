@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 import axios from 'axios';
 import TravelChip from './TravelChip';
-import SuggestionChip from './SuggestionChip';
 
 const Chat = () => {
   const [messages, setMessages] = useState([]);
@@ -9,16 +8,16 @@ const Chat = () => {
   const [sessionId, setSessionId] = useState(null);
   const [structuredData, setStructuredData] = useState({});
 
-  const handleSendMessage = async (messageText = input) => {
-    if (messageText.trim() === '') return;
+  const handleSendMessage = async () => {
+    if (input.trim() === '') return;
 
-    const userMessage = { text: messageText, sender: 'user' };
+    const userMessage = { text: input, sender: 'user' };
     setMessages((prevMessages) => [...prevMessages, userMessage]);
     setInput('');
 
     try {
       const response = await axios.post('/api/chat/message', {
-        message: messageText,
+        message: input,
         session_id: sessionId,
       });
 
@@ -30,13 +29,6 @@ const Chat = () => {
       console.error('Error sending message:', error);
     }
   };
-
-  const handleSuggestionClick = (suggestion) => {
-    setInput(suggestion);
-    handleSendMessage(suggestion);
-  };
-
-  const suggestions = ["Plan a trip to Paris", "I want to go to the mountains", "I'm looking for a relaxing beach vacation"];
 
   return (
     <div className="chat-container p-4">
@@ -57,11 +49,6 @@ const Chat = () => {
           </div>
         ))}
       </div>
-      <div className="suggestions-area mt-4 flex flex-wrap">
-        {messages.length === 0 && suggestions.map((suggestion, index) => (
-          <SuggestionChip key={index} suggestion={suggestion} onClick={handleSuggestionClick} />
-        ))}
-      </div>
       <div className="input-area mt-4 flex">
         <input
           type="text"
@@ -71,7 +58,7 @@ const Chat = () => {
           onKeyPress={(e) => e.key === 'Enter' && handleSendMessage()}
         />
         <button
-          onClick={() => handleSendMessage()}
+          onClick={handleSendMessage}
           className="bg-blue-500 text-white p-2 rounded-r"
         >
           Send
