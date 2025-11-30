@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Your Itinerary</title>
+    <style>
+        body { font-family: sans-serif; }
+        h1 { color: #333; }
+        .day { border-bottom: 1px solid #ccc; padding-bottom: 20px; margin-bottom: 20px; }
+        .activity { margin-bottom: 10px; }
+    </style>
+</head>
+<body>
+    <h1>Itinerary for {{ destination }}</h1>
+
+    {% for day in days %}
+    <div class="day">
+        <h2>Day {{ day.day_number }}</h2>
+        {% for activity in day.activities %}
+        <div class="activity">
+            <h3>{{ activity.name }}</h3>
+            <p>{{ activity.description }}</p>
+            <p><em>{{ activity.reason }}</em></p>
+        </div>
+        {% endfor %}
+    </div>
+    {% endfor %}
+</body>
+</html>
